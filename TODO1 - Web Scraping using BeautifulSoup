@@ -1,1 +1,19 @@
+import requests  //requesting the website to extract
+from bs4 import BeautifulSoup
 
+url = "https://en.wikipedia.org/wiki/Billboard_Year-End_Hot_100_singles_of_1970"   //url of the website to be extracted
+response = requests.get(url)
+response.text
+
+soup = BeautifulSoup(response.text)
+
+dictionary = {} //to store the details of a song in a key value pair
+
+for songs in soup.findAll('table', attrs={"class":"wikitable"}): 
+  for i in range(0,202,1):
+    if i%2==0:
+      title =  songs.findAll('a')[i].string  //to print the title of the song 
+    else:
+      artist = (songs.findAll('a')[i].string).split("&",1)  //to print the artist of the song
+      dictionary[title] = [artist]
+print(dictionary)
